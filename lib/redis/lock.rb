@@ -38,7 +38,7 @@ class Redis
       try_until_timeout do
         expiration = generate_expiration
         # Use the expiration as the value of the lock.
-        break if !redis.get(key) && Redis.next.setnx(key, expiration)
+        break if redis.setnx(key, expiration) && Redis.next.setnx(key, expiration)
 
         # Lock is being held.  Now check to see if it's expired (if we're using
         # lock expiration).
