@@ -11,16 +11,6 @@ class Redis
   autoload :SortedSet, 'redis/sorted_set'
   autoload :Value,     'redis/value'
   autoload :HashKey,   'redis/hash_key'
-
-  # Monkey patching Redis to hold the migrating to DB called next
-  def self.next
-    raise "next Redis server connection needs to be explicitly set" unless @next
-    @next # ||= Redis.new
-  end
-
-  def self.next=(redis)
-    @next = redis
-  end
   #
   # Redis::Objects enables high-performance atomic operations in your app
   # by leveraging the atomic features of the Redis server.  To use Redis::Objects,
