@@ -837,10 +837,10 @@ describe Redis::Objects do
       @team = Team.new
     end
 
-    it "should write new locks to new DB" do
+    it "should write new locks to both DBs" do
       @team.reorder_lock.lock do
         Redis.next.get(@team.reorder_lock.key).should == "1"
-        Redis.current.get(@team.reorder_lock.key).should == nil
+        Redis.current.get(@team.reorder_lock.key).should == "1"
       end
     end
 

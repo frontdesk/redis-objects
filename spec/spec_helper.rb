@@ -71,6 +71,18 @@ REDIS_HANDLE = Redis.new(:host => REDIS_HOST, :port => REDIS_PORT)
 #$redis = REDIS_HANDLE
 Redis.current = REDIS_HANDLE
 
+# Monkey patching Redis to hold the migrating to DB called next
+class Redis
+  def self.next
+    raise "next Redis server connection needs to be explicitly set" unless @next
+    @next # ||= Redis.new
+  end
+
+  def self.next=(redis)
+    @next = redis
+  end
+end
+
 # Grab another global handle for Next DB
 require 'redis/objects'
 Redis.next = Redis.new(:host => REDIS_HOST, :port => REDIS_PORT, :db => 12)
